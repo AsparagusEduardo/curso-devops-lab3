@@ -64,7 +64,7 @@ pipeline {
                         sh "docker tag curso-devops-lab3 ghcr.io/asparaguseduardo/curso-devops-lab3:${env.APP_SEMANTIC_VERSION}"
                         sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:latest"
                         sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:${env.BUILD_NUMBER}"
-                        sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:${semenv.APP_SEMANTIC_VERSIONver}"
+                        sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:${env.APP_SEMANTIC_VERSION}"
                     }
                 }
             }
