@@ -25,5 +25,10 @@ pipeline {
                 sh "npm run build"
             }
         }
+        stage("Construcción Imagen Docker") {
+            steps {
+                sh "docker build -t curso-devops-lab3 ."
+            }
+        }
     }
 }
