@@ -35,7 +35,7 @@ pipeline {
                 sh "docker build -t curso-devops-lab3 ."
 
                 script {
-                    var semver = sh(
+                    def semver = sh(
                         script: 'npm pkg get version| tr -d \'"\''
                     ).trim()
                     docker.withRegistry("https://index.docker.io/v1/","credencial-dh"){
