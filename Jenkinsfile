@@ -8,8 +8,21 @@ pipeline {
         stage("Instalación de dependencias") {
             steps {
                 sh "npm install"
-                sh "ls -l"
-                sh "hostname"
+            }
+        }
+        stage("Lint") {
+            steps {
+                sh "npm run lint"
+            }
+        }
+        stage("Testeo") {
+            steps {
+                sh "npm run test"
+            }
+        }
+        stage("Construcción app") {
+            steps {
+                sh "npm run build"
             }
         }
     }
