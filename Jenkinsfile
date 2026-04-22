@@ -1,10 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image "node:24"
+        }
+    }
     stages {
-        stage("primera etapa") {
+        stage("Instalación de dependencias") {
             steps {
-                sh "echo 'segunda etapa pipeline de jenkinsaaa'"
-                sh "echo 'segunda etapa pipeline y mensaje de jenkins'"
+                sh "npm install"
+                sh "ls -l"
+                sh "hostname"
             }
         }
     }
