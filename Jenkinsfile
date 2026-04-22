@@ -1,28 +1,33 @@
 pipeline {
-    agent {
-        docker {
-            image "node:24"
-        }
-    }
+    agent any
     stages {
-        stage("Instalación de dependencias") {
-            steps {
-                sh "npm install"
+        stage("Integración continua") {
+            agent {
+                docker {
+                    image "node:24"
+                }
             }
-        }
-        stage("Lint") {
-            steps {
-                sh "npm run lint"
-            }
-        }
-        stage("Testeo") {
-            steps {
-                sh "npm run test"
-            }
-        }
-        stage("Construcción app") {
-            steps {
-                sh "npm run build"
+            stages {
+                stage("Instalación de dependencias") {
+                    steps {
+                        sh "npm install"
+                    }
+                }
+                stage("Lint") {
+                    steps {
+                        sh "npm run lint"
+                    }
+                }
+                stage("Testeo") {
+                    steps {
+                        sh "npm run test"
+                    }
+                }
+                stage("Construcción app") {
+                    steps {
+                        sh "npm run build"
+                    }
+                }
             }
         }
         stage("Construcción Imagen Docker") {
