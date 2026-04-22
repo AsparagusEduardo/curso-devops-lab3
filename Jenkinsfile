@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage("primera etapa") {
             steps {
-                sh "echo 'segunda etapa pipeline de jenkins'"
+                sh "echo 'segunda etapa pipeline de jenkinsaaa'"
                 sh "echo 'segunda etapa pipeline y mensaje de jenkins'"
             }
         }
