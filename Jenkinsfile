@@ -29,9 +29,9 @@ pipeline {
                         sh "npm run lint"
                     }
                 }
-                stage("Testeo") {
+                stage("Testeo con covertura") {
                     steps {
-                        sh "npm run test"
+                        sh "npm run test:cov"
                     }
                 }
                 stage("Construcción app") {
