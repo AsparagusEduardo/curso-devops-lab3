@@ -41,6 +41,34 @@ pipeline {
                 }
             }
         }
+        stage("Quality Assurance"){
+            agent {
+                docker {
+                    image 'sonarsource/sonar-scanner-cli'
+                    args '--network=devops-infra_default'
+                    reuseNode true
+                }
+            }
+            stages{
+                stage("validacion de codigo"){
+                    steps{
+                        withSonarQubeEnv('sonarqube'){
+                            sh 'sonar-scanner'
+                        }
+                    }
+                }
+                stage('validacion quality gate'){
+                    steps{
+                        script{
+                            def  qualityGate = waitForQualityGate() // esperar por el resultado del qualitygate en un endpoint de jenkins, que se gatilla desde sonar via webhook.
+                            if(qualityGate.status != 'OK'){
+                                error "La puerta de calidad ha fallado : ${qualityGate.status}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
         stage("Construcción Imagen Docker") {
             steps {
                 sh "docker build -t curso-devops-lab3 ."
