@@ -31,3 +31,18 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: curso-devops-service
+  namespace: curso
+  labels:
+    app: curso-devops-stack
+spec:
+  selector:
+     app: curso-devops-stack
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
