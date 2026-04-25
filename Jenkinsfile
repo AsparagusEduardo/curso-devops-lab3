@@ -97,5 +97,22 @@ pipeline {
                 }
             }
         }
+        stage("Despliegue") {
+            agent {
+                docker {
+                    image 'alpine/k8s:1.34.6'
+                    reuseNode true
+                }
+            }
+            steps {
+                script {
+                    if (!env.APP_SEMANTIC_VERSION?.trim()) {
+                        error("APP_SEMANTIC_VERSION no definida en el stage de anterior")
+                    }
+                }
+
+                sh "kubectl -n equezada set image deployement/curso-devops-deployment contenedor-curso-devops=asparaguseduardo/curso-devops-lab3:latest"
+            }
+        }
     }
 }
