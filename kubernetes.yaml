@@ -3,6 +3,15 @@ kind: Namespace
 metadata:
   name: equezada
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: curso-devops-config
+  namespace: equezada
+data:
+  USERNAME: "cmd"
+  ENDPOINT: "http://api.google.com/v1"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
