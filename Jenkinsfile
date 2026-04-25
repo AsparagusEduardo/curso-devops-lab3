@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    environment {
+        K8S_NAMESPACE = "equezada"
+        K8S_DEPLOYMENT = "curso-devops-deployment"
+        K8S_CONTAINER = "contenedor-curso-devops"
+        
+        IMAGEN_DOCKER = "asparaguseduardo/curso-devops-lab3"
+    }
     stages {
         stage("Integración continua") {
             agent {
@@ -78,21 +85,21 @@ pipeline {
                         error("APP_SEMANTIC_VERSION no definida en el stage de anterior")
                     }
                     docker.withRegistry("https://index.docker.io/v1/","credencial-dh"){
-                        sh "docker tag curso-devops-lab3 asparaguseduardo/curso-devops-lab3:latest"
-                        sh "docker tag curso-devops-lab3 asparaguseduardo/curso-devops-lab3:${env.BUILD_NUMBER}"
-                        sh "docker tag curso-devops-lab3 asparaguseduardo/curso-devops-lab3:${env.APP_SEMANTIC_VERSION}"
-                        sh "docker push asparaguseduardo/curso-devops-lab3:latest"
-                        sh "docker push asparaguseduardo/curso-devops-lab3:${env.BUILD_NUMBER}"
-                        sh "docker push asparaguseduardo/curso-devops-lab3:${env.APP_SEMANTIC_VERSION}"
+                        sh "docker tag curso-devops-lab3 ${env.IMAGEN_DOCKER}:latest"
+                        sh "docker tag curso-devops-lab3 ${env.IMAGEN_DOCKER}:${env.BUILD_NUMBER}"
+                        sh "docker tag curso-devops-lab3 ${env.IMAGEN_DOCKER}:${env.APP_SEMANTIC_VERSION}"
+                        sh "docker push ${env.IMAGEN_DOCKER}:latest"
+                        sh "docker push ${env.IMAGEN_DOCKER}:${env.BUILD_NUMBER}"
+                        sh "docker push ${env.IMAGEN_DOCKER}:${env.APP_SEMANTIC_VERSION}"
                     }
 
                     docker.withRegistry("https://ghcr.io","credencial-gh"){
-                        sh "docker tag curso-devops-lab3 ghcr.io/asparaguseduardo/curso-devops-lab3:latest"
-                        sh "docker tag curso-devops-lab3 ghcr.io/asparaguseduardo/curso-devops-lab3:${env.BUILD_NUMBER}"
-                        sh "docker tag curso-devops-lab3 ghcr.io/asparaguseduardo/curso-devops-lab3:${env.APP_SEMANTIC_VERSION}"
-                        sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:latest"
-                        sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:${env.BUILD_NUMBER}"
-                        sh "docker push ghcr.io/asparaguseduardo/curso-devops-lab3:${env.APP_SEMANTIC_VERSION}"
+                        sh "docker tag curso-devops-lab3 ghcr.io/${env.IMAGEN_DOCKER}:latest"
+                        sh "docker tag curso-devops-lab3 ghcr.io/${env.IMAGEN_DOCKER}:${env.BUILD_NUMBER}"
+                        sh "docker tag curso-devops-lab3 ghcr.io/${env.IMAGEN_DOCKER}:${env.APP_SEMANTIC_VERSION}"
+                        sh "docker push ghcr.io/${env.IMAGEN_DOCKER}:latest"
+                        sh "docker push ghcr.io/${env.IMAGEN_DOCKER}:${env.BUILD_NUMBER}"
+                        sh "docker push ghcr.io/${env.IMAGEN_DOCKER}:${env.APP_SEMANTIC_VERSION}"
                     }
                 }
             }
@@ -112,7 +119,7 @@ pipeline {
                 }
 
                 withKubeConfig([credentialsId: 'credencial-k8']) {
-                    sh "kubectl -n equezada set image deployment/curso-devops-deployment contenedor-curso-devops=asparaguseduardo/curso-devops-lab3:latest"
+                    sh "kubectl -n ${env.K8S_NAMESPACE} set image deployment/${env.K8S_DEPLOYMENT} ${env.K8S_CONTAINER}=${env.IMAGEN_DOCKER}:${env.APP_SEMANTIC_VERSION}"
                 }
             }
         }
