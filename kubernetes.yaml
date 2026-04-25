@@ -46,3 +46,22 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: curso-devops-ingress
+  namespace: curso
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app.devops.cl
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: curso-devops-service
+            port:
+              number: 80
