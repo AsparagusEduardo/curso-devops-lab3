@@ -112,7 +112,7 @@ pipeline {
                 }
 
                 withKubeConfig([credentialsId: 'credencial-k8']) {
-                    sh "kubectl -n equezada set image deployement/curso-devops-deployment contenedor-curso-devops=asparaguseduardo/curso-devops-lab3:latest"
+                    sh "kubectl -n equezada set image deployment/curso-devops-deployment contenedor-curso-devops=asparaguseduardo/curso-devops-lab3:latest"
                 }
             }
         }
